@@ -345,6 +345,19 @@ tbGraphics::PixelSpace Asteroids::WorldTargetHeight(void)
 
 //--------------------------------------------------------------------------------------------------------------------//
 
+Asteroids::Angle Asteroids::ForwardVector2ToRotation(const Vector2& forward)
+{
+	Vector2 yAxis(0.0f, -1.0f);
+	float orientation = acos((yAxis.x * forward.x) + (yAxis.y * forward.y));
+	if (forward.x > 0.0f)
+	{
+		orientation = fabs(orientation - tbMath::kTwoPi);
+	}
+	return Angle::Radians(orientation);
+}
+
+//--------------------------------------------------------------------------------------------------------------------//
+
 Asteroids::Vector2 Asteroids::RotationToForwardVector2(const Angle& orientation)
 {
 	Vector2 result;

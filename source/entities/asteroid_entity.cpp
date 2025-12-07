@@ -81,7 +81,7 @@ void Asteroids::AsteroidEntity::OnSimulate(void)
 	SetPosition(GetPosition() + mLinearVelocity * FixedTime());
 	SetRotation(GetRotation() + mAngularVelocity * FixedTime());
 
-	// This is duplicated in both RocketShipEntity and AsteroidEntity
+	// This is duplicated in both RocketShipEntity, AsteroidEntity and kinda BulletEntity
 	const Vector2 worldSize(WorldTargetWidth(), WorldTargetHeight());
 	const float radius = mShape.GetRadius();
 	Vector2 position = GetPosition();

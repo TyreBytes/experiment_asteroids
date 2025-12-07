@@ -6,6 +6,8 @@
 ///------------------------------------------------------------------------------------------------------------------///
 
 #include "../entities/rocket_ship_entity.hpp"
+#include "../entities/bullet_entity.hpp"
+
 #include "../development/development.hpp"
 
 //--------------------------------------------------------------------------------------------------------------------//
@@ -16,6 +18,7 @@ Asteroids::RocketShipEntity::RocketShipEntity(const Vector2& position) :
 	mThrustBackward(Key::tbKeyDown),
 	mThrustRight(Key::tbKeyRight),
 	mThrustLeft(Key::tbKeyLeft),
+	mShootWeapon(Key::tbMouseLeft),
 	mShape(TyreBytes::ColorPalette::Pink),
 	mLinearVelocity(Vector2::Zero()),
 	mAngularVelocity(Angle::Zero())
@@ -101,7 +104,7 @@ void Asteroids::RocketShipEntity::OnSimulate(void)
 	SetPosition(GetPosition() + mLinearVelocity * FixedTime());
 	SetRotation(GetRotation() + mAngularVelocity * FixedTime());
 
-	// This is duplicated in both RocketShipEntity and AsteroidEntity
+	// This is duplicated in both RocketShipEntity, AsteroidEntity and kinda BulletEntity
 	const Vector2 worldSize(WorldTargetWidth(), WorldTargetHeight());
 	const float radius = mShape.GetRadius();
 	Vector2 position = GetPosition();
@@ -111,6 +114,16 @@ void Asteroids::RocketShipEntity::OnSimulate(void)
 	if (position.y < -radius) { position.y += worldSize.y; }
 	SetPosition(position);
 	// End duplication.
+
+
+	if (true == mShootWeapon.IsPressed())
+	{
+		const Vector2 mouseInWorldSpace = ScreenSpaceToWorldSpace(tbGame::Input::GetMousePosition());
+		const Vector2 shootDirection = GetPosition().DirectionTo(mouseInWorldSpace);
+
+		const Vector2 weaponPosition = GetPosition();
+		GetEntityManager()->AddEntity(new BulletEntity(weaponPosition, shootDirection * 800.0f));
+	}
 }
 
 //--------------------------------------------------------------------------------------------------------------------//

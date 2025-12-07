@@ -1,24 +1,23 @@
 ///
 /// @file
-/// @details An entity within the Asteroids project.
+/// @details An entity within the Asteroids project that is a projectile flying through space to destroy an asteroid!
 ///
 /// <!-- Copyright (c) 2025 Tyre Bytes LLC - All Rights Reserved -->
 ///------------------------------------------------------------------------------------------------------------------///
 
-#ifndef Asteroids_RocketShipEntity_hpp
-#define Asteroids_RocketShipEntity_hpp
+#ifndef Asteroids_BulletEntity_hpp
+#define Asteroids_BulletEntity_hpp
 
 #include "../asteroids.hpp"
-#include "../graphics/rocket_ship_shape.hpp"
 
 namespace Asteroids
 {
 
-	class RocketShipEntity : public tbGame::Entity
+	class BulletEntity : public tbGame::Entity
 	{
 	public:
-		explicit RocketShipEntity(const Vector2& position = tbGraphics::ScreenCenter());
-		virtual ~RocketShipEntity(void);
+		explicit BulletEntity(const Vector2& position, const Vector2& velocity);
+		virtual ~BulletEntity(void);
 
 	protected:
 		virtual void OnAdd(void) override;
@@ -29,19 +28,11 @@ namespace Asteroids
 		virtual void OnCollide(const tbGame::Entity& otherEntity) override;
 
 	private:
-		tbGame::InputAction mThrustForward;
-		tbGame::InputAction mThrustBackward;
-		tbGame::InputAction mThrustRight;
-		tbGame::InputAction mThrustLeft;
-
-		tbGame::InputAction mShootWeapon;
-
-
-		RocketShipShape mShape;
+		tbGraphics::Sprite mSprite;
 		Vector2 mLinearVelocity;
-		Angle mAngularVelocity;
+		float mRadius;
 	};
 
 };	//namespace Asteroids
 
-#endif /* Asteroids_RocketShipEntity_hpp */
+#endif /* Asteroids_BulletEntity_hpp */

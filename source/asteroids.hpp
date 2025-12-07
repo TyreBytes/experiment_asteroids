@@ -106,6 +106,7 @@ namespace Asteroids
 		return screenSpace / GameScale();
 	}
 
+	Angle ForwardVector2ToRotation(const Vector2& forward);
 	Vector2 RotationToForwardVector2(const Angle& orientation);
 
 	// Define the FromString/ToString so that we can create custom TemplateSpecializations.
