@@ -13,11 +13,16 @@
 
 namespace Asteroids
 {
+	namespace Implementation
+	{
+		Vector2 RandomLinearVelocity(void);
+	};
 
 	class AsteroidEntity : public tbGame::Entity
 	{
 	public:
-		explicit AsteroidEntity(const int size, const Vector2& position = tbGraphics::ScreenCenter());
+		explicit AsteroidEntity(const int size, const Vector2& position = tbGraphics::ScreenCenter(),
+			const Vector2& velocity = Implementation::RandomLinearVelocity());
 		virtual ~AsteroidEntity(void);
 
 		inline float GetRadius(void) const { return mShape.GetRadius(); }
@@ -31,9 +36,15 @@ namespace Asteroids
 		virtual void OnCollide(const tbGame::Entity& otherEntity) override;
 
 	private:
+		// Direction the bullet, or projectile is traveling.
+		void BreakApart(const Vector2& impactDirection);
+
 		AsteroidShape mShape;
 		Vector2 mLinearVelocity;
 		Angle mAngularVelocity;
+
+		int mSize;
+		int mHitPoints;
 	};
 
 };	//namespace Asteroids

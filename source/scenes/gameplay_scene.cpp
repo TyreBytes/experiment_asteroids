@@ -56,11 +56,13 @@ void Asteroids::GameplayScene::OnUpdate(const float deltaTime)
 		theSceneManager->ChangeToScene(SceneId::kTitleScene);
 	}
 
-	if (true == tbApplication::Input::IsKeyPressed(Key::tbMouseLeft))
+	//Hacks:::
+	if (true == tbApplication::Input::IsKeyPressed(Key::tbMouseRight))
 	{
 		const Vector2 mouseInWorldSpace = ScreenSpaceToWorldSpace(tbGame::Input::GetMousePosition());
 
-		const int asteroidSize = tbMath::RandomInt(0, 9);
+		//const int asteroidSize = tbMath::RandomInt(0, 9);
+		const int asteroidSize = 12;
 		AddEntity(new AsteroidEntity(asteroidSize, mouseInWorldSpace));
 	}
 }

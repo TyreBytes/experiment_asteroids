@@ -19,6 +19,8 @@ namespace Asteroids
 		explicit BulletEntity(const Vector2& position, const Vector2& velocity);
 		virtual ~BulletEntity(void);
 
+		inline const Vector2& GetLinearVelocity(void) const { return mLinearVelocity; }
+
 	protected:
 		virtual void OnAdd(void) override;
 		virtual void OnRemove(void) override;

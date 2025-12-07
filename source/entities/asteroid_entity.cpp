@@ -6,6 +6,7 @@
 ///------------------------------------------------------------------------------------------------------------------///
 
 #include "../entities/asteroid_entity.hpp"
+#include "../entities/bullet_entity.hpp"
 #include "../development/development.hpp"
 
 //--------------------------------------------------------------------------------------------------------------------//
@@ -20,12 +21,12 @@ namespace Asteroids::Implementation
 
 	float CalculateRadius(const int asteroidSize)
 	{
-		return 15.0f + asteroidSize * 5.0f;
+		return 25.0f + asteroidSize * 5.0f;
 	}
 
 	Vector2 RandomLinearVelocity(void)
 	{
-		const float speed = tbMath::RandomFloat(10.0f, 100.0f);
+		const float speed = tbMath::RandomFloat(50.0f, 100.0f);
 		return Vector2(tbMath::RandomFloat(-1.0f, 1.0f), tbMath::RandomFloat(-1.0f, 1.0f)).GetNormalized() * speed;
 	}
 
@@ -38,11 +39,13 @@ namespace Asteroids::Implementation
 
 //--------------------------------------------------------------------------------------------------------------------//
 
-Asteroids::AsteroidEntity::AsteroidEntity(const int size, const Vector2& position) :
+Asteroids::AsteroidEntity::AsteroidEntity(const int size, const Vector2& position, const Vector2& velocity) :
 	tbGame::Entity("AsteroidEntity"),
 	mShape(Implementation::CalculateSides(size), Implementation::CalculateRadius(size)),
-	mLinearVelocity(Implementation::RandomLinearVelocity()),
-	mAngularVelocity(Implementation::RandomAngularVelocity())
+	mLinearVelocity(velocity),
+	mAngularVelocity(Implementation::RandomAngularVelocity()),
+	mSize(size),
+	mHitPoints(10)
 {
 	SetPosition(position);
 
@@ -137,6 +140,37 @@ void Asteroids::AsteroidEntity::OnRender(void) const
 void Asteroids::AsteroidEntity::OnCollide(const tbGame::Entity& otherEntity)
 {
 	tbGame::Entity::OnCollide(otherEntity);
+
+	if (true == otherEntity.IsEntityOfType("BulletEntity"))
+	{
+		const BulletEntity& bullet = *dynamic_cast<const BulletEntity*>(&otherEntity);
+
+		mHitPoints -= 1;
+		if (mHitPoints <= 0)
+		{
+			BreakApart(bullet.GetLinearVelocity().GetNormalized());
+		}
+	}
+}
+
+//--------------------------------------------------------------------------------------------------------------------//
+
+void Asteroids::AsteroidEntity::BreakApart(const Vector2& impactDirection)
+{
+	tbGame::EntityManager* entityManager = GetEntityManager();
+
+	if (mSize >= 1)
+	{
+		const float speed = mLinearVelocity.Magnitude() * 1.1f;
+		const Vector2 direction1 = Asteroids::RotationToForwardVector2(Asteroids::ForwardVector2ToRotation(impactDirection) - 45.0_degrees);
+		const Vector2 direction2 = Asteroids::RotationToForwardVector2(Asteroids::ForwardVector2ToRotation(impactDirection) + 45.0_degrees);
+
+		const float radius = Implementation::CalculateRadius(mSize - 1) * 0.7f;
+		entityManager->AddEntity(new AsteroidEntity(mSize - 1, GetPosition() + direction1 * radius, direction1 * speed));
+		entityManager->AddEntity(new AsteroidEntity(mSize - 1, GetPosition() + direction2 * radius, direction2 * speed));
+	}
+
+	entityManager->RemoveEntity(this);
 }
 
 //--------------------------------------------------------------------------------------------------------------------//
