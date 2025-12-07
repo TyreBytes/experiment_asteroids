@@ -11,6 +11,7 @@
 #include "../scenes/base_rusty_scene.hpp"
 
 #include <turtle_brains/game/tb_game_scene.hpp>
+#include <turtle_brains/express/graphics/tbx_parallax_backdrop.hpp>
 
 namespace Asteroids
 {
@@ -30,7 +31,7 @@ namespace Asteroids
 		virtual void OnClose(void) override;
 
 	private:
-		void LoadProfileAndLaunchGame(const int profile);
+		tbxGraphics::ParallaxBackdrop mSpaceBackdrop;
 	};
 
 };	//namespace Asteroids

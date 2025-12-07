@@ -10,18 +10,19 @@
 #include "../interface.hpp"
 #include "../development/development.hpp"
 #include "../music_manager.hpp"
-
-namespace
-{
-	const float kPaddingMultiplier = 6.0f;
-	const tbMath::Angle kCogRotationSpeed = 3.0_degrees; //per second
-}
+#include "../asteroids.hpp"
 
 //--------------------------------------------------------------------------------------------------------------------//
 
 Asteroids::GameplayScene::GameplayScene(void) :
-	BaseRustyScene()
+	BaseRustyScene(),
+	mSpaceBackdrop()
 {
+	mSpaceBackdrop.ResetTargetArea(WorldTargetWidth(), WorldTargetHeight());
+	tbGraphics::Sprite spaceSprite("data/space/space_blue_nebula_08.png");
+	spaceSprite.SetColor(Color(0x99FFFFFF));
+	mSpaceBackdrop.AddParallaxLayer(spaceSprite, 1.0f);
+	AddGraphic(mSpaceBackdrop);
 }
 
 //--------------------------------------------------------------------------------------------------------------------//
@@ -41,6 +42,9 @@ void Asteroids::GameplayScene::OnSimulate(void)
 
 void Asteroids::GameplayScene::OnUpdate(const float deltaTime)
 {
+	Vector2 movement(100.0f, 100.0f);
+	mSpaceBackdrop.SetPosition(mSpaceBackdrop.GetPosition() + movement * deltaTime);
+
 	BaseRustyScene::OnUpdate(deltaTime);
 
 	if (false == IsSettingsOpen() && true == tbGame::Input::IsKeyPressed(tbApplication::tbKeyEscape))
@@ -68,8 +72,6 @@ void Asteroids::GameplayScene::OnRenderInterface(void) const
 void Asteroids::GameplayScene::OnOpen(void)
 {
 	BaseRustyScene::OnOpen();
-
-	MusicSystem::theMusicManager.PlayMusic(MusicSystem::MusicTrack::Opening);
 }
 
 //--------------------------------------------------------------------------------------------------------------------//
@@ -77,31 +79,6 @@ void Asteroids::GameplayScene::OnOpen(void)
 void Asteroids::GameplayScene::OnClose(void)
 {
 	BaseRustyScene::OnClose();
-}
-
-//--------------------------------------------------------------------------------------------------------------------//
-
-void Asteroids::GameplayScene::LoadProfileAndLaunchGame(const int profile)
-{
-	GameManager::SetActiveProfile(profile);
-
-	// 2025-11-11: The state for all the profiles is always loaded, but if we are going to call LoadGame here, we should
-	//   also be calling SaveGame() before it to save any of the changes to the previous active profile, otherwise the
-	//   load would wipe the progress.
-	//GameManager::SaveGame();
-	//GameManager::LoadGame();
-
-	tb_always_log(LogGame::Info() << "The player is trying to start the game...");
-
-	//if (GameManager::IsUnlocked(UnlockKeys::FirstGameLaunch))
-	//{
-	//	theSceneManager->ChangeToScene(SceneId::kGarageScene);
-	//}
-	//else
-	//{
-	//	GameManager::UnlockKey(UnlockKeys::FirstGameLaunch);
-	//	theSceneManager->ChangeToScene(SceneId::kSupplyRunScene);
-	//}
 }
 
 //--------------------------------------------------------------------------------------------------------------------//

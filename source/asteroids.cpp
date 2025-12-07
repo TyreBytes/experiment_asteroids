@@ -138,6 +138,13 @@ int Asteroids::Main(int argumentCount, const char* argumentValues[])
 
 	GameManager::SaveGame();
 
+	// 2025-12-07: This is where we should be unloading the audio events to prevent warning, however ikiwixz found that
+	//   tbInternal: tbWarning: EventTable 'audio_events' was not unloaded before shutdown. is coming from RunGame()
+	//   before we gain control. And calling this here actually causes an error condition since TurtleBrains already
+	//   cleaned up...
+	//tbAudio::theAudioManager.UnloadEventTable("audio_events");
+
+
 	// Save the window properties and other user settings before complete shutting down.
 	const tbApplication::WindowProperties currentWindowProperties = gameApplication.GetWindowProperties();
 	TheUserSettings().SetInteger(Settings::WindowPositionX(), currentWindowProperties.mWindowPositionX);
