@@ -51,6 +51,7 @@ Asteroids::AsteroidEntity::AsteroidEntity(const int size, const Vector2& positio
 	mShape(Implementation::CalculateSides(size), Implementation::CalculateRadius(size)),
 	mLinearVelocity(velocity),
 	mAngularVelocity(Implementation::RandomAngularVelocity()),
+	mOriginalSize(size),
 	mSize(size),
 	mHitPoints(Implementation::CalculateHitPoints(size))
 {
@@ -180,8 +181,16 @@ void Asteroids::AsteroidEntity::BreakApart(const Vector2& impactDirection)
 		const Vector2 direction2 = Asteroids::RotationToForwardVector2(Asteroids::ForwardVector2ToRotation(impactDirection) + 45.0_degrees);
 
 		const float radius = Implementation::CalculateRadius(mSize - 1) * 0.7f;
-		entityManager->AddEntity(new AsteroidEntity(mSize - 1, GetPosition() + direction1 * radius, direction1 * speed));
-		entityManager->AddEntity(new AsteroidEntity(mSize - 1, GetPosition() + direction2 * radius, direction2 * speed));
+		AsteroidEntity* asteroid1 = new AsteroidEntity(mSize - 1, GetPosition() + direction1 * radius, direction1 * speed);
+		AsteroidEntity* asteroid2 = new AsteroidEntity(mSize - 1, GetPosition() + direction2 * radius, direction2 * speed);
+		asteroid1->mOriginalSize = mOriginalSize;
+		asteroid2->mOriginalSize = mOriginalSize;
+
+		entityManager->AddEntity(asteroid1);
+		entityManager->AddEntity(asteroid2);
+
+		const StatType xpGain = 1.0f + static_cast<StatType>(mOriginalSize - mSize);
+		GameManager::GainExperience(xpGain);
 	}
 
 	entityManager->RemoveEntity(this);

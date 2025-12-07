@@ -19,6 +19,7 @@ Asteroids::RocketShipEntity::RocketShipEntity(const Vector2& position) :
 	mThrustRight(Key::tbKeyRight),
 	mThrustLeft(Key::tbKeyLeft),
 	mShootWeapon(Key::tbMouseLeft),
+	mActivateWeapon(Key::tbKeyQ),
 	mWeaponReloadTimer(RustyTimer::Zero()),
 	mShape(TyreBytes::ColorPalette::Pink),
 	mLinearVelocity(Vector2::Zero()),
@@ -87,34 +88,46 @@ void Asteroids::RocketShipEntity::OnSimulate(void)
 	// 2025-12-07: positive angles are suppose to be clockwise ...
 	const Vector2 direction = RotationToForwardVector2(GetRotation());
 
-	if (true == mThrustForward.IsDown()) { mLinearVelocity += direction * kLinearAcceleration * FixedTime(); }
-	if (true == mThrustBackward.IsDown()) { mLinearVelocity -= direction * 0.4f * kLinearAcceleration * FixedTime(); }
-	if (true == mThrustRight.IsDown()) { mAngularVelocity -= kAngularAcceleration * FixedTime(); }
-	if (true == mThrustLeft.IsDown()) { mAngularVelocity += kAngularAcceleration * FixedTime(); }
+	const bool isGunActive = mActivateWeapon.IsDown();
 
-	if (mLinearVelocity.Magnitude() > kMaximumLinearSpeed)
+	if (false == isGunActive && false == mActivateWeapon.IsReleased())
 	{
-		mLinearVelocity.SetLength(kMaximumLinearSpeed);
+		if (true == mThrustForward.IsDown()) { mLinearVelocity += direction * kLinearAcceleration * FixedTime(); }
+		if (true == mThrustBackward.IsDown()) { mLinearVelocity -= direction * 0.4f * kLinearAcceleration * FixedTime(); }
+		if (true == mThrustRight.IsDown()) { mAngularVelocity -= kAngularAcceleration * FixedTime(); }
+		if (true == mThrustLeft.IsDown()) { mAngularVelocity += kAngularAcceleration * FixedTime(); }
+
+		if (mLinearVelocity.Magnitude() > kMaximumLinearSpeed)
+		{
+			mLinearVelocity.SetLength(kMaximumLinearSpeed);
+		}
+
+		if (std::abs(mAngularVelocity.AsDegrees()) > kMaximumAngularSpeed.AsDegrees())
+		{
+			mAngularVelocity = kMaximumAngularSpeed * tbMath::Sign(mAngularVelocity.AsDegrees());
+		}
+
+		SetPosition(GetPosition() + mLinearVelocity * FixedTime());
+		SetRotation(GetRotation() + mAngularVelocity * FixedTime());
+
+		// This is duplicated in both RocketShipEntity, AsteroidEntity and kinda BulletEntity
+		const Vector2 worldSize(WorldTargetWidth(), WorldTargetHeight());
+		const float radius = mShape.GetRadius();
+		Vector2 position = GetPosition();
+		if (position.x > worldSize.x + radius) { position.x -= worldSize.x; }
+		if (position.x < -radius) { position.x += worldSize.x; }
+		if (position.y > worldSize.y + radius) { position.y -= worldSize.y; }
+		if (position.y < -radius) { position.y += worldSize.y; }
+		SetPosition(position);
+		// End duplication.
+
+		SetPosition(ScreenSpaceToWorldSpace(tbGame::Input::GetMousePosition()));
 	}
 
-	if (std::abs(mAngularVelocity.AsDegrees()) > kMaximumAngularSpeed.AsDegrees())
+	if (true == mActivateWeapon.IsReleased())
 	{
-		mAngularVelocity = kMaximumAngularSpeed * tbMath::Sign(mAngularVelocity.AsDegrees());
+		tbGame::Input::SetMousePosition(WorldSpaceToScreenSpace(GetPosition()));
 	}
-
-	SetPosition(GetPosition() + mLinearVelocity * FixedTime());
-	SetRotation(GetRotation() + mAngularVelocity * FixedTime());
-
-	// This is duplicated in both RocketShipEntity, AsteroidEntity and kinda BulletEntity
-	const Vector2 worldSize(WorldTargetWidth(), WorldTargetHeight());
-	const float radius = mShape.GetRadius();
-	Vector2 position = GetPosition();
-	if (position.x > worldSize.x + radius) { position.x -= worldSize.x; }
-	if (position.x < -radius) { position.x += worldSize.x; }
-	if (position.y > worldSize.y + radius) { position.y -= worldSize.y; }
-	if (position.y < -radius) { position.y += worldSize.y; }
-	SetPosition(position);
-	// End duplication.
 
 	if (true == mShootWeapon.IsDown())
 	{
@@ -124,7 +137,7 @@ void Asteroids::RocketShipEntity::OnSimulate(void)
 	if (true == mWeaponReloadTimer.IsZero() || true == mShootWeapon.IsPressed())
 	{
 		const Vector2 mouseInWorldSpace = ScreenSpaceToWorldSpace(tbGame::Input::GetMousePosition());
-		const Vector2 shootDirection = GetPosition().DirectionTo(mouseInWorldSpace);
+		const Vector2 shootDirection = (true == isGunActive) ? GetPosition().DirectionTo(mouseInWorldSpace) : direction;
 
 		const Vector2 weaponPosition = GetPosition();
 		GetEntityManager()->AddEntity(new BulletEntity(weaponPosition, shootDirection * 800.0f));

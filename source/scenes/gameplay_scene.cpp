@@ -24,9 +24,6 @@ Asteroids::GameplayScene::GameplayScene(void) :
 	tbGraphics::Sprite spaceSprite("data/space/space_blue_nebula_08.png");
 	spaceSprite.SetColor(Color(0x99FFFFFF));
 	mSpaceBackdrop.AddParallaxLayer(spaceSprite, 1.0f);
-	AddGraphic(mSpaceBackdrop);
-
-	AddEntity(mRocketShip);
 }
 
 //--------------------------------------------------------------------------------------------------------------------//
@@ -46,6 +43,11 @@ void Asteroids::GameplayScene::OnSimulate(void)
 
 void Asteroids::GameplayScene::OnUpdate(const float deltaTime)
 {
+	if (true == tbGame::Input::IsKeyPressed(Key::tbKeyP))
+	{
+		GameManager::SetPaused(!GameManager::IsPaused());
+	}
+
 	Vector2 movement(100.0f, 100.0f);
 	mSpaceBackdrop.SetPosition(mSpaceBackdrop.GetPosition() + movement * deltaTime);
 
@@ -101,7 +103,6 @@ void Asteroids::GameplayScene::OnRenderInterface(void) const
 	experienceText.SetOrigin(Anchor::BottomLeft);
 	experienceText.SetPosition(levelText.GetAnchorPosition(Anchor::BottomRight, kPadding * 2.0f, 0.0f));
 	experienceText.Render();
-
 }
 
 //--------------------------------------------------------------------------------------------------------------------//
@@ -109,6 +110,16 @@ void Asteroids::GameplayScene::OnRenderInterface(void) const
 void Asteroids::GameplayScene::OnOpen(void)
 {
 	BaseRustyScene::OnOpen();
+
+	ClearEntities();
+	ClearGraphics();
+
+	AddGraphic(mSpaceBackdrop);
+
+	AddEntity(mRocketShip);
+
+	AddEntity(new AsteroidEntity(4, Vector2(tbMath::RandomFloat(50.0f, tbGraphics::ScreenWidth() - 50.0f),
+		tbMath::RandomFloat(50.0f, tbGraphics::ScreenHeight() - 50.0f))));
 }
 
 //--------------------------------------------------------------------------------------------------------------------//

@@ -29,7 +29,7 @@ namespace Asteroids
 		{ Stat::TotalPlayTime, "TOTAL_PLAY_TIME" },
 		{ Stat::TotalActiveTime, "TOTAL_ACTIVE_TIME" },
 
-		{ Stat::Level, "Level" },
+		{ Stat::Level, "LEVEL" },
 		{ Stat::Experience, "XP" },
 	};
 
@@ -41,6 +41,7 @@ namespace Asteroids
 		int theActiveProfile = 0;
 
 		float theTimeMultiplier = 1.0f;
+		bool theGameIsPaused = false;
 	}
 };
 
@@ -405,6 +406,20 @@ float Asteroids::GameManager::TimeMultiplier(void)
 void Asteroids::GameManager::TimeMultiplier(float multiplier)
 {
 	theTimeMultiplier = multiplier;
+}
+
+//--------------------------------------------------------------------------------------------------------------------//
+
+bool Asteroids::GameManager::IsPaused(void)
+{
+	return theGameIsPaused;
+}
+
+//--------------------------------------------------------------------------------------------------------------------//
+
+void Asteroids::GameManager::SetPaused(bool paused)
+{
+	theGameIsPaused = paused;
 }
 
 //--------------------------------------------------------------------------------------------------------------------//

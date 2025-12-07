@@ -178,6 +178,9 @@ namespace Asteroids
 		float TimeMultiplier(void);
 		void TimeMultiplier(float multiplier);
 
+		bool IsPaused(void);
+		void SetPaused(bool paused);
+
 		void ResetGameToDefaults(void);
 		void SaveGame(void);
 		void LoadGame(void);

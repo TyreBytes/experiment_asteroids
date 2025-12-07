@@ -97,7 +97,6 @@ void Asteroids::BulletEntity::OnCollide(const tbGame::Entity& otherEntity)
 {
 	tbGame::Entity::OnCollide(otherEntity);
 
-
 	if (true == otherEntity.IsEntityOfType("AsteroidEntity"))
 	{
 		GetEntityManager()->RemoveEntity(this);

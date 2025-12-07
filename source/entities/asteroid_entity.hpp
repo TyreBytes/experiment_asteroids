@@ -44,6 +44,7 @@ namespace Asteroids
 		Vector2 mLinearVelocity;
 		Angle mAngularVelocity;
 
+		int mOriginalSize;
 		int mSize;
 		int mHitPoints;
 	};

@@ -34,6 +34,8 @@ namespace Asteroids
 		tbGame::InputAction mThrustRight;
 		tbGame::InputAction mThrustLeft;
 
+		tbGame::InputAction mActivateWeapon;
+
 		tbGame::InputAction mShootWeapon;
 
 		RustyTimer mWeaponReloadTimer;
