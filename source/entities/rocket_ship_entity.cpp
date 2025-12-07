@@ -6,6 +6,7 @@
 ///------------------------------------------------------------------------------------------------------------------///
 
 #include "../entities/rocket_ship_entity.hpp"
+#include "../development/development.hpp"
 
 //--------------------------------------------------------------------------------------------------------------------//
 
@@ -28,6 +29,8 @@ Asteroids::RocketShipEntity::RocketShipEntity(const Vector2& position) :
 	AddGraphic(mShape);
 
 	SetPosition(position);
+
+	AddBoundingCircle(mShape.GetRadius() * 0.7f);
 }
 
 //--------------------------------------------------------------------------------------------------------------------//
@@ -123,9 +126,12 @@ void Asteroids::RocketShipEntity::OnRender(void) const
 {
 	tbGame::Entity::OnRender();
 
-	//const float length = 100.0f;
-	//const Vector2 direction = RotationToForwardVector2(GetRotation());
-	//tbGraphics::Line(GetPosition(), GetPosition() + direction * length).Render();
+#if defined(rusty_development)
+	if (true == Development::IsDebugging())
+	{
+		OnDebugRender();
+	}
+#endif
 }
 
 //--------------------------------------------------------------------------------------------------------------------//
@@ -133,6 +139,11 @@ void Asteroids::RocketShipEntity::OnRender(void) const
 void Asteroids::RocketShipEntity::OnCollide(const tbGame::Entity& otherEntity)
 {
 	tbGame::Entity::OnCollide(otherEntity);
+
+	if (true == otherEntity.IsEntityOfType("AsteroidEntity"))
+	{
+		tb_always_log("Player died...");
+	}
 }
 
 //--------------------------------------------------------------------------------------------------------------------//

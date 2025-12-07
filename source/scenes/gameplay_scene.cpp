@@ -71,9 +71,14 @@ void Asteroids::GameplayScene::OnRenderGameWorld(void) const
 {
 	BaseRustyScene::OnRenderGameWorld();
 
-	const float length = 100.0f;
-	const Vector2 direction = RotationToForwardVector2(mRocketShip.GetRotation());
-	tbGraphics::Line(mRocketShip.GetPosition(), mRocketShip.GetPosition() + direction * length).Render();
+#if defined(rusty_development)
+	if (true == Development::IsDebugging())
+	{
+		const float length = 100.0f;
+		const Vector2 direction = RotationToForwardVector2(mRocketShip.GetRotation());
+		tbGraphics::Line(mRocketShip.GetPosition(), mRocketShip.GetPosition() + direction * length).Render();
+	}
+#endif
 }
 
 //--------------------------------------------------------------------------------------------------------------------//

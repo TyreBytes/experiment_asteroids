@@ -5,7 +5,8 @@
 /// <!-- Copyright (c) 2025 Tyre Bytes LLC - All Rights Reserved -->
 ///------------------------------------------------------------------------------------------------------------------///
 
-#include "asteroid_entity.hpp"
+#include "../entities/asteroid_entity.hpp"
+#include "../development/development.hpp"
 
 //--------------------------------------------------------------------------------------------------------------------//
 
@@ -45,8 +46,10 @@ Asteroids::AsteroidEntity::AsteroidEntity(const int size, const Vector2& positio
 {
 	SetPosition(position);
 
-	mShape.SetOrigin(Anchor::Center);
+	//mShape.SetOrigin(Anchor::Center);
 	AddGraphic(mShape);
+
+	AddBoundingCircle(mShape.GetRadius() * 0.95f);
 }
 
 //--------------------------------------------------------------------------------------------------------------------//
@@ -120,6 +123,13 @@ void Asteroids::AsteroidEntity::OnUpdate(const float deltaTime)
 void Asteroids::AsteroidEntity::OnRender(void) const
 {
 	tbGame::Entity::OnRender();
+
+#if defined(rusty_development)
+	if (true == Development::IsDebugging())
+	{
+		OnDebugRender();
+	}
+#endif
 }
 
 //--------------------------------------------------------------------------------------------------------------------//

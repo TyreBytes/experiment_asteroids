@@ -134,7 +134,8 @@ int Asteroids::Main(int argumentCount, const char* argumentValues[])
 	tbAudio::theAudioManager.SetGlobalMusicVolume(0.6899f);
 	tbAudio::theAudioManager.SetGlobalEffectVolume(0.6899f);
 
-	gameApplication.RunGame(SceneManager::GetScene(SceneId::kTitleScene));
+	gameApplication.RunGame(SceneManager::GetScene(SceneId::kGameplayScene));
+	//gameApplication.RunGame(SceneManager::GetScene(SceneId::kTitleScene));
 
 	GameManager::SaveGame();
 
