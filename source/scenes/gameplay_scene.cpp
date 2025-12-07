@@ -11,6 +11,7 @@
 #include "../development/development.hpp"
 #include "../music_manager.hpp"
 #include "../asteroids.hpp"
+#include "../entities/asteroid_entity.hpp"
 
 //--------------------------------------------------------------------------------------------------------------------//
 
@@ -50,6 +51,17 @@ void Asteroids::GameplayScene::OnUpdate(const float deltaTime)
 	if (false == IsSettingsOpen() && true == tbGame::Input::IsKeyPressed(tbApplication::tbKeyEscape))
 	{
 		theSceneManager->ChangeToScene(SceneId::kTitleScene);
+	}
+
+	if (true == tbApplication::Input::IsKeyPressed(Key::tbMouseLeft))
+	{
+		const Vector2 mouseInWorldSpace = ScreenSpaceToWorldSpace(tbGame::Input::GetMousePosition());
+
+		AsteroidEntity* asteroid = new AsteroidEntity(tbMath::RandomInt(0, 9));
+		//AsteroidEntity* asteroid = new AsteroidEntity(1);
+
+		asteroid->SetPosition(mouseInWorldSpace);
+		AddEntity(asteroid);
 	}
 }
 
