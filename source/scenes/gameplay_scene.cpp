@@ -17,13 +17,16 @@
 
 Asteroids::GameplayScene::GameplayScene(void) :
 	BaseRustyScene(),
-	mSpaceBackdrop()
+	mSpaceBackdrop(),
+	mRocketShip(ScreenSpaceToWorldSpace(tbGraphics::ScreenCenter()))
 {
 	mSpaceBackdrop.ResetTargetArea(WorldTargetWidth(), WorldTargetHeight());
 	tbGraphics::Sprite spaceSprite("data/space/space_blue_nebula_08.png");
 	spaceSprite.SetColor(Color(0x99FFFFFF));
 	mSpaceBackdrop.AddParallaxLayer(spaceSprite, 1.0f);
 	AddGraphic(mSpaceBackdrop);
+
+	AddEntity(mRocketShip);
 }
 
 //--------------------------------------------------------------------------------------------------------------------//
@@ -57,11 +60,8 @@ void Asteroids::GameplayScene::OnUpdate(const float deltaTime)
 	{
 		const Vector2 mouseInWorldSpace = ScreenSpaceToWorldSpace(tbGame::Input::GetMousePosition());
 
-		AsteroidEntity* asteroid = new AsteroidEntity(tbMath::RandomInt(0, 9));
-		//AsteroidEntity* asteroid = new AsteroidEntity(1);
-
-		asteroid->SetPosition(mouseInWorldSpace);
-		AddEntity(asteroid);
+		const int asteroidSize = tbMath::RandomInt(0, 9);
+		AddEntity(new AsteroidEntity(asteroidSize, mouseInWorldSpace));
 	}
 }
 
@@ -70,6 +70,10 @@ void Asteroids::GameplayScene::OnUpdate(const float deltaTime)
 void Asteroids::GameplayScene::OnRenderGameWorld(void) const
 {
 	BaseRustyScene::OnRenderGameWorld();
+
+	const float length = 100.0f;
+	const Vector2 direction = RotationToForwardVector2(mRocketShip.GetRotation());
+	tbGraphics::Line(mRocketShip.GetPosition(), mRocketShip.GetPosition() + direction * length).Render();
 }
 
 //--------------------------------------------------------------------------------------------------------------------//

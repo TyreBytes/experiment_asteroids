@@ -20,8 +20,8 @@ namespace Asteroids
 	class AsteroidShape : public tbGraphics::PolygonShape
 	{
 	public:
-		explicit AsteroidShape(const int corners = 5, const float radius = 64.0f, const tbGraphics::Color& color = tbGraphics::ColorPalette::White,
-			const Vector2& position = Vector2::Zero());
+		explicit AsteroidShape(const int corners = 5, const float radius = 64.0f,
+			const Color& color = tbGraphics::ColorPalette::White, const Vector2& position = Vector2::Zero());
 
 		virtual ~AsteroidShape(void);
 

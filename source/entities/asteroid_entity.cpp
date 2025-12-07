@@ -24,7 +24,7 @@ namespace Asteroids::Implementation
 
 	Vector2 RandomLinearVelocity(void)
 	{
-		const float speed = 500.0f;// tbMath::RandomFloat(10.0f, 100.0f);
+		const float speed = tbMath::RandomFloat(10.0f, 100.0f);
 		return Vector2(tbMath::RandomFloat(-1.0f, 1.0f), tbMath::RandomFloat(-1.0f, 1.0f)).GetNormalized() * speed;
 	}
 
@@ -33,17 +33,18 @@ namespace Asteroids::Implementation
 		const Angle kMaximumAngularSpeed = 45.0_degrees; //per second
 		return kMaximumAngularSpeed * tbMath::RandomFloat(-1.0f, 1.0f);
 	}
-
 };
 
 //--------------------------------------------------------------------------------------------------------------------//
 
-Asteroids::AsteroidEntity::AsteroidEntity(const int size) :
+Asteroids::AsteroidEntity::AsteroidEntity(const int size, const Vector2& position) :
 	tbGame::Entity("AsteroidEntity"),
+	mShape(Implementation::CalculateSides(size), Implementation::CalculateRadius(size)),
 	mLinearVelocity(Implementation::RandomLinearVelocity()),
-	mAngularVelocity(Implementation::RandomAngularVelocity()),
-	mShape(Implementation::CalculateSides(size), Implementation::CalculateRadius(size))
+	mAngularVelocity(Implementation::RandomAngularVelocity())
 {
+	SetPosition(position);
+
 	mShape.SetOrigin(Anchor::Center);
 	AddGraphic(mShape);
 }
@@ -77,10 +78,8 @@ void Asteroids::AsteroidEntity::OnSimulate(void)
 	SetPosition(GetPosition() + mLinearVelocity * FixedTime());
 	SetRotation(GetRotation() + mAngularVelocity * FixedTime());
 
+	// This is duplicated in both RocketShipEntity and AsteroidEntity
 	const Vector2 worldSize(WorldTargetWidth(), WorldTargetHeight());
-	//const Vector2 worldSize(static_cast<float>(ScreenSpaceToWorldSpace(tbGraphics::ScreenWidth())),
-	//	static_cast<float>(ScreenSpaceToWorldSpace(tbGraphics::ScreenHeight())));
-
 	const float radius = mShape.GetRadius();
 	Vector2 position = GetPosition();
 	if (position.x > worldSize.x + radius) { position.x -= worldSize.x; }
@@ -88,6 +87,7 @@ void Asteroids::AsteroidEntity::OnSimulate(void)
 	if (position.y > worldSize.y + radius) { position.y -= worldSize.y; }
 	if (position.y < -radius) { position.y += worldSize.y; }
 	SetPosition(position);
+	// End duplication.
 
 	tb_error_if(nullptr == GetEntityManager(), "Shouldn't be in OnSimulate() without an EntityManager.");
 

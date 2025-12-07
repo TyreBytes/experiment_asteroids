@@ -9,6 +9,7 @@
 #define Asteroids_GameplayScene_hpp
 
 #include "../scenes/base_rusty_scene.hpp"
+#include "../entities/rocket_ship_entity.hpp"
 
 #include <turtle_brains/game/tb_game_scene.hpp>
 #include <turtle_brains/express/graphics/tbx_parallax_backdrop.hpp>
@@ -32,6 +33,7 @@ namespace Asteroids
 
 	private:
 		tbxGraphics::ParallaxBackdrop mSpaceBackdrop;
+		RocketShipEntity mRocketShip;
 	};
 
 };	//namespace Asteroids

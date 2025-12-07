@@ -344,6 +344,16 @@ tbGraphics::PixelSpace Asteroids::WorldTargetHeight(void)
 
 //--------------------------------------------------------------------------------------------------------------------//
 
+Asteroids::Vector2 Asteroids::RotationToForwardVector2(const Angle& orientation)
+{
+	Vector2 result;
+	result.x = -sin(orientation.AsRadians());
+	result.y = -cos(orientation.AsRadians());
+	return result;
+}
+
+//--------------------------------------------------------------------------------------------------------------------//
+
 float Asteroids::FixedTime(void)
 {
 	static const float kFixedTime(0.01f);

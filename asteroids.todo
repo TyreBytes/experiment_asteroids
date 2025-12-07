@@ -14,3 +14,7 @@
 		Changing this: for (auto& asteroids : GetEntityManager()->GetEntitiesByType("AsteroidEntity"))
 		to: for (AsteroidEntity& asteroid : GetEntityManager()->GetEntities<AsteroidEntity>())
 		would be nice. Hiding the dynamic_cast and just passing back asteroids.
+	☐ 2025-12-07: Rotating a Graphic (actually RocketShape) seemed positive angle was not CW
+		Expected that positive angles rotate the Graphic clockwise...
+	☐ 2025-12-07: `tbMath::RotationToForwardVector2(direction, GetRotation())`; not actually working...
+	

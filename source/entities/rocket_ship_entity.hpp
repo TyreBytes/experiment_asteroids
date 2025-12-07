@@ -5,22 +5,20 @@
 /// <!-- Copyright (c) 2025 Tyre Bytes LLC - All Rights Reserved -->
 ///------------------------------------------------------------------------------------------------------------------///
 
-#ifndef Asteroids_AsteroidEntity_hpp
-#define Asteroids_AsteroidEntity_hpp
+#ifndef Asteroids_RocketShipEntity_hpp
+#define Asteroids_RocketShipEntity_hpp
 
 #include "../asteroids.hpp"
-#include "../graphics/asteroid_shape.hpp"
+#include "../graphics/rocket_ship_shape.hpp"
 
 namespace Asteroids
 {
 
-	class AsteroidEntity : public tbGame::Entity
+	class RocketShipEntity : public tbGame::Entity
 	{
 	public:
-		explicit AsteroidEntity(const int size, const Vector2& position = tbGraphics::ScreenCenter());
-		virtual ~AsteroidEntity(void);
-
-		inline float GetRadius(void) const { return mShape.GetRadius(); }
+		explicit RocketShipEntity(const Vector2& position = tbGraphics::ScreenCenter());
+		virtual ~RocketShipEntity(void);
 
 	protected:
 		virtual void OnAdd(void) override;
@@ -31,11 +29,16 @@ namespace Asteroids
 		virtual void OnCollide(const tbGame::Entity& otherEntity) override;
 
 	private:
-		AsteroidShape mShape;
+		tbGame::InputAction mThrustForward;
+		tbGame::InputAction mThrustBackward;
+		tbGame::InputAction mThrustRight;
+		tbGame::InputAction mThrustLeft;
+
+		RocketShipShape mShape;
 		Vector2 mLinearVelocity;
 		Angle mAngularVelocity;
 	};
 
 };	//namespace Asteroids
 
-#endif /* Asteroids_AsteroidEntity_hpp */
+#endif /* Asteroids_RocketShipEntity_hpp */
