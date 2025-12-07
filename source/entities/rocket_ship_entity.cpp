@@ -116,7 +116,6 @@ void Asteroids::RocketShipEntity::OnSimulate(void)
 	SetPosition(position);
 	// End duplication.
 
-
 	if (true == mShootWeapon.IsDown())
 	{
 		mWeaponReloadTimer.DecrementStep();

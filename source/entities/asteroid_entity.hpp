@@ -25,6 +25,7 @@ namespace Asteroids
 			const Vector2& velocity = Implementation::RandomLinearVelocity());
 		virtual ~AsteroidEntity(void);
 
+		inline bool IsAlive(void) const { return mHitPoints > 0; }
 		inline float GetRadius(void) const { return mShape.GetRadius(); }
 
 	protected:

@@ -14,7 +14,8 @@ Asteroids::BulletEntity::BulletEntity(const Vector2& position, const Vector2& ve
 	tbGame::Entity("BulletEntity"),
 	mSprite("data/laser_sprites/01.png"),
 	mLinearVelocity(velocity),
-	mRadius(11.0f)
+	mRadius(11.0f),
+	mDamage(100)
 {
 	mSprite.SetOrigin(Anchor::Center);
 	mSprite.SetRotation(90.0_degrees);

@@ -88,6 +88,20 @@ void Asteroids::GameplayScene::OnRenderGameWorld(void) const
 void Asteroids::GameplayScene::OnRenderInterface(void) const
 {
 	BaseRustyScene::OnRenderInterface();
+
+	tbGraphics::Text levelText;
+	Interface::MakeTitleText(levelText, NotLocalized("Level ") + GetStatAsIntegerString(Stat::Level));
+	levelText.SetOrigin(Anchor::TopLeft);
+	levelText.SetPosition(Interface::GetAnchorPositionOfInterface(Anchor::TopLeft, kPadding, kPadding));
+	levelText.Render();
+
+	tbGraphics::Text experienceText;
+	Interface::MakeNormalText(experienceText, GetStatAsIntegerString(Stat::Experience) +
+		NotLocalized(" / ") + MakeIntegerString(GameManager::GetExperienceForNextLevel()) + NotLocalized(" xp"));
+	experienceText.SetOrigin(Anchor::BottomLeft);
+	experienceText.SetPosition(levelText.GetAnchorPosition(Anchor::BottomRight, kPadding * 2.0f, 0.0f));
+	experienceText.Render();
+
 }
 
 //--------------------------------------------------------------------------------------------------------------------//

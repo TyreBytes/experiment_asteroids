@@ -298,6 +298,14 @@ Asteroids::StatType Asteroids::GameManager::GetExperienceForCurrentLevel(void)
 
 //--------------------------------------------------------------------------------------------------------------------//
 
+void Asteroids::GameManager::GainExperience(const StatType& value)
+{
+	GetMutableStat(Stat::Experience) += value;
+	CheckForLevelUp();
+}
+
+//--------------------------------------------------------------------------------------------------------------------//
+
 int Asteroids::GameManager::CheckForLevelUp(void)
 {
 	int levelsGained = 0;

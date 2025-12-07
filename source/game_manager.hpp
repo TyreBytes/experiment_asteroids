@@ -152,7 +152,9 @@ namespace Asteroids
 		StatType GetExperienceForCurrentLevel(const GameStats& gameStats);
 		StatType GetExperienceForCurrentLevel(void);
 
-		// Should be called immediately ANYTIME fame is modified.
+		void GainExperience(const StatType& value);
+
+		// Should be called immediately ANYTIME experience is modified, unless throught calling GainExperience().
 		int CheckForLevelUp(void);
 
 		// Keys for progression and unlocking features etc.

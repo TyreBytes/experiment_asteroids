@@ -19,6 +19,7 @@ namespace Asteroids
 		explicit BulletEntity(const Vector2& position, const Vector2& velocity);
 		virtual ~BulletEntity(void);
 
+		inline int GetDamage(void) const { return mDamage; }
 		inline const Vector2& GetLinearVelocity(void) const { return mLinearVelocity; }
 
 	protected:
@@ -33,6 +34,7 @@ namespace Asteroids
 		tbGraphics::Sprite mSprite;
 		Vector2 mLinearVelocity;
 		float mRadius;
+		int mDamage;
 	};
 
 };	//namespace Asteroids

@@ -9,6 +9,8 @@
 #include "../entities/bullet_entity.hpp"
 #include "../development/development.hpp"
 
+#include "../game_manager.hpp"
+
 //--------------------------------------------------------------------------------------------------------------------//
 
 namespace Asteroids::Implementation
@@ -146,15 +148,22 @@ void Asteroids::AsteroidEntity::OnCollide(const tbGame::Entity& otherEntity)
 {
 	tbGame::Entity::OnCollide(otherEntity);
 
-	if (true == otherEntity.IsEntityOfType("BulletEntity"))
+	if (true == IsAlive() && true == otherEntity.IsEntityOfType("BulletEntity"))
 	{
 		const BulletEntity& bullet = *dynamic_cast<const BulletEntity*>(&otherEntity);
 
-		mHitPoints -= 1;
-		if (mHitPoints <= 0)
+		const int damage = bullet.GetDamage();
+		if (mHitPoints <= damage)
 		{
 			BreakApart(bullet.GetLinearVelocity().GetNormalized());
+			mHitPoints = 0;
 		}
+		else
+		{
+			mHitPoints -= damage;
+		}
+
+		GameManager::GainExperience(1.0f);
 	}
 }
 
