@@ -36,7 +36,7 @@ namespace Asteroids
 
 		tbGame::InputAction mShootWeapon;
 
-
+		RustyTimer mWeaponReloadTimer;
 		RocketShipShape mShape;
 		Vector2 mLinearVelocity;
 		Angle mAngularVelocity;

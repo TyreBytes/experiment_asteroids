@@ -19,6 +19,7 @@ Asteroids::RocketShipEntity::RocketShipEntity(const Vector2& position) :
 	mThrustRight(Key::tbKeyRight),
 	mThrustLeft(Key::tbKeyLeft),
 	mShootWeapon(Key::tbMouseLeft),
+	mWeaponReloadTimer(RustyTimer::Zero()),
 	mShape(TyreBytes::ColorPalette::Pink),
 	mLinearVelocity(Vector2::Zero()),
 	mAngularVelocity(Angle::Zero())
@@ -116,13 +117,20 @@ void Asteroids::RocketShipEntity::OnSimulate(void)
 	// End duplication.
 
 
-	if (true == mShootWeapon.IsPressed())
+	if (true == mShootWeapon.IsDown())
+	{
+		mWeaponReloadTimer.DecrementStep();
+	}
+
+	if (true == mWeaponReloadTimer.IsZero() || true == mShootWeapon.IsPressed())
 	{
 		const Vector2 mouseInWorldSpace = ScreenSpaceToWorldSpace(tbGame::Input::GetMousePosition());
 		const Vector2 shootDirection = GetPosition().DirectionTo(mouseInWorldSpace);
 
 		const Vector2 weaponPosition = GetPosition();
 		GetEntityManager()->AddEntity(new BulletEntity(weaponPosition, shootDirection * 800.0f));
+
+		mWeaponReloadTimer += 0.5f;
 	}
 }
 

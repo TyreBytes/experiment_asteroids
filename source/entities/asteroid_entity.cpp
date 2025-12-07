@@ -24,6 +24,11 @@ namespace Asteroids::Implementation
 		return 25.0f + asteroidSize * 5.0f;
 	}
 
+	int CalculateHitPoints(const int asteroidSize)
+	{
+		return 3 + 2 * (asteroidSize / 4);
+	}
+
 	Vector2 RandomLinearVelocity(void)
 	{
 		const float speed = tbMath::RandomFloat(50.0f, 100.0f);
@@ -45,7 +50,7 @@ Asteroids::AsteroidEntity::AsteroidEntity(const int size, const Vector2& positio
 	mLinearVelocity(velocity),
 	mAngularVelocity(Implementation::RandomAngularVelocity()),
 	mSize(size),
-	mHitPoints(10)
+	mHitPoints(Implementation::CalculateHitPoints(size))
 {
 	SetPosition(position);
 
