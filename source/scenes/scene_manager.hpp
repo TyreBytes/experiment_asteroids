@@ -19,16 +19,7 @@ namespace Asteroids
 	enum SceneId
 	{
 		kTitleScene,
-		kChallengerScene,
-		kSupplyRunScene,
-		kGarageScene,
-		kQuestScene,
-		kTheCampScene,
-		kDragRaceScene,
-
-#if defined(rusty_development)
-		kTechTreeEditor,
-#endif /* rusty_development */
+		kGameplayScene,
 		kSceneCount,
 	};
 

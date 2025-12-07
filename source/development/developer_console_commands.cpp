@@ -215,65 +215,65 @@ namespace Asteroids::Development
 		}
 	};
 
-	class OpenEditorCommand : public tbCore::Diagnostics::CommandDefinition
-	{
-	public:
-		OpenEditorCommand(void) :
-			CommandDefinition("editor", "Open the editor for the tech tree.")
-		{
-			AddSynopsis("");
-		}
+	//class OpenEditorCommand : public tbCore::Diagnostics::CommandDefinition
+	//{
+	//public:
+	//	OpenEditorCommand(void) :
+	//		CommandDefinition("editor", "Open the editor for the tech tree.")
+	//	{
+	//		AddSynopsis("");
+	//	}
 
-		virtual ~OpenEditorCommand(void)
-		{
-		}
+	//	virtual ~OpenEditorCommand(void)
+	//	{
+	//	}
 
-		virtual void OnRunCommand(tbCore::Diagnostics::Command& /*command*/) override
-		{
-			theSceneManager->ChangeToScene(SceneId::kTechTreeEditor);
-		}
-	};
+	//	virtual void OnRunCommand(tbCore::Diagnostics::Command& /*command*/) override
+	//	{
+	//		theSceneManager->ChangeToScene(SceneId::kTechTreeEditor);
+	//	}
+	//};
 
-	class ResetSavesEditorCommand : public tbCore::Diagnostics::CommandDefinition
-	{
-	public:
-		ResetSavesEditorCommand(void) :
-			CommandDefinition("reset", "Resets the game and save states for the active profile to a clear fresh state.")
-		{
-			AddSynopsis("");
-			AddSynopsis("--all");
+	//class ResetSavesEditorCommand : public tbCore::Diagnostics::CommandDefinition
+	//{
+	//public:
+	//	ResetSavesEditorCommand(void) :
+	//		CommandDefinition("reset", "Resets the game and save states for the active profile to a clear fresh state.")
+	//	{
+	//		AddSynopsis("");
+	//		AddSynopsis("--all");
 
-			AddOption("all", { "Resets all the game states, not just the active profile." });
-		}
+	//		AddOption("all", { "Resets all the game states, not just the active profile." });
+	//	}
 
-		virtual ~ResetSavesEditorCommand(void)
-		{
-		}
+	//	virtual ~ResetSavesEditorCommand(void)
+	//	{
+	//	}
 
-		virtual void OnRunCommand(tbCore::Diagnostics::Command& command) override
-		{
-			SceneId scene = SceneId::kTitleScene;
+	//	virtual void OnRunCommand(tbCore::Diagnostics::Command& command) override
+	//	{
+	//		SceneId scene = SceneId::kTitleScene;
 
-			if (true == command.HasOption("all"))
-			{
-				tb_always_log(LogState::Always() << DebugInfo::PlayTimeHistory() << "Developer ResetGame for ALL profiles.");
-				for (size_t profileIndex = 0; profileIndex < GameManager::GetNumberOfProfiles(); ++profileIndex)
-				{
-					GameManager::ResetProfile(profileIndex);
-				}
-			}
-			else
-			{
-				tb_always_log(LogState::Always() << DebugInfo::PlayTimeHistory() << "Developer ResetGame for active profile.");
-				GameManager::ResetProfile();
-				scene = SceneId::kSupplyRunScene;
-			}
+	//		if (true == command.HasOption("all"))
+	//		{
+	//			tb_always_log(LogState::Always() << DebugInfo::PlayTimeHistory() << "Developer ResetGame for ALL profiles.");
+	//			for (size_t profileIndex = 0; profileIndex < GameManager::GetNumberOfProfiles(); ++profileIndex)
+	//			{
+	//				GameManager::ResetProfile(profileIndex);
+	//			}
+	//		}
+	//		else
+	//		{
+	//			tb_always_log(LogState::Always() << DebugInfo::PlayTimeHistory() << "Developer ResetGame for active profile.");
+	//			GameManager::ResetProfile();
+	//			scene = SceneId::kSupplyRunScene;
+	//		}
 
-			GameManager::SaveGame();
-			GameManager::LoadGame();
-			theSceneManager->ChangeToScene(scene);
-		}
-	};
+	//		GameManager::SaveGame();
+	//		GameManager::LoadGame();
+	//		theSceneManager->ChangeToScene(scene);
+	//	}
+	//};
 
 	class RunTimerCommand : public tbCore::Diagnostics::CommandDefinition
 	{
@@ -321,9 +321,9 @@ void Asteroids::Development::RegisterDeveloperCommands(void)
 	static GetResourceCommand theGetResourceCommand;
 	static UnlocksCommand theUnlocksCommand;
 	static UnlockCommand theUnlockCommand;
-	static OpenEditorCommand theOpenEditorCommand;
+//	static OpenEditorCommand theOpenEditorCommand;
 	static RunTimerCommand theRunTimerCommand;
-	static ResetSavesEditorCommand theResetSavesEditorCommand;
+//	static ResetSavesEditorCommand theResetSavesEditorCommand;
 }
 
 #endif /* rusty_development */

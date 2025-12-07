@@ -119,14 +119,6 @@ void Asteroids::TitleScene::OnUpdate(const float deltaTime)
 		//	profileButton.SetActive(false);
 		//}
 	}
-
-#if defined(rusty_development)
-	if (true == tbGame::Input::IsKeyPressed(tbApplication::tbMouseRight))
-	{
-		tb_always_log(LogGame::Always() << "The developer right-clicked to play drag race!");
-		SceneManager::ChangeToScene(SceneId::kDragRaceScene);
-	}
-#endif
 }
 
 //--------------------------------------------------------------------------------------------------------------------//
@@ -172,6 +164,7 @@ void Asteroids::TitleScene::LoadProfileAndLaunchGame(const int profile)
 	//GameManager::LoadGame();
 
 	tb_always_log(LogGame::Info() << "The player is trying to start the game...");
+	theSceneManager->ChangeToScene(SceneId::kGameplayScene);
 
 	//if (GameManager::IsUnlocked(UnlockKeys::FirstGameLaunch))
 	//{

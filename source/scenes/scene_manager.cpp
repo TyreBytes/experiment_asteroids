@@ -9,6 +9,7 @@
 
 #include "../scenes/scene_manager.hpp"
 #include "../scenes/title_scene.hpp"
+#include "../scenes/gameplay_scene.hpp"
 
 Asteroids::SceneManager* Asteroids::theSceneManager(nullptr);
 
@@ -22,6 +23,8 @@ Asteroids::SceneManager::SceneManager(void) :
 
 	mScenes.resize(kSceneCount, nullptr);
 	mScenes[SceneId::kTitleScene] = new TitleScene();
+	mScenes[SceneId::kGameplayScene] = new GameplayScene();
+
 }
 
 //--------------------------------------------------------------------------------------------------------------------//

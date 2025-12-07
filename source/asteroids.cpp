@@ -134,14 +134,7 @@ int Asteroids::Main(int argumentCount, const char* argumentValues[])
 	tbAudio::theAudioManager.SetGlobalMusicVolume(0.6899f);
 	tbAudio::theAudioManager.SetGlobalEffectVolume(0.6899f);
 
-	if (true == launchSettings.GetBoolean("race"))
-	{
-		gameApplication.RunGame(SceneManager::GetScene(SceneId::kDragRaceScene));
-	}
-	else
-	{
-		gameApplication.RunGame(SceneManager::GetScene(SceneId::kTitleScene));
-	}
+	gameApplication.RunGame(SceneManager::GetScene(SceneId::kTitleScene));
 
 	GameManager::SaveGame();
 

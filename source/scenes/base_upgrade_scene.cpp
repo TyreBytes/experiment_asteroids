@@ -24,7 +24,7 @@ Asteroids::BaseUpgradeScene::BaseUpgradeScene(const SceneId /*childScene*/) :
 {
 	ButtonFactory::SetupButton(mScavengeButton, ButtonType::Primary, NotLocalized("Play"));
 	mScavengeButton.SetClickCallback([]() {
-		theSceneManager->ChangeToScene(SceneId::kSupplyRunScene);
+		theSceneManager->ChangeToScene(SceneId::kGameplayScene);
 	});
 	AddInterfaceEntity(mScavengeButton);
 
