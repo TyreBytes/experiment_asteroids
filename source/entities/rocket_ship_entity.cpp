@@ -62,6 +62,8 @@ void Asteroids::RocketShipEntity::OnSimulate(void)
 	const Angle kAngularAcceleration = 1080.0_degrees; //per second^2
 
 	//Drag.
+	mLinearVelocity -= mLinearVelocity * 0.75f * FixedTime();
+
 	//mLinearVelocity = tbMath::Interpolation::Linear(0.05f, mLinearVelocity, Vector2::Zero());
 	mAngularVelocity = tbMath::Interpolation::Linear(0.05f, mAngularVelocity, 0.0_degrees);
 
@@ -87,8 +89,6 @@ void Asteroids::RocketShipEntity::OnSimulate(void)
 	{
 		mLinearVelocity.SetLength(kMaximumLinearSpeed);
 	}
-
-	tb_always_log("RocketShip Speed: " << mLinearVelocity.Magnitude());
 
 	if (std::abs(mAngularVelocity.AsDegrees()) > kMaximumAngularSpeed.AsDegrees())
 	{
