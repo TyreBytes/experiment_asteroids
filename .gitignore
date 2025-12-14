@@ -19,6 +19,7 @@
 /run/asteroids.exe
 /run/asteroids_*
 /run/data/wip/
+/asteroids/
 /Asteroids.app
 *.blend1
 *.blend2
