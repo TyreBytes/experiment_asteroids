@@ -40,6 +40,19 @@
 
 namespace Asteroids
 {
+	class MyFormatter : public std::stringstream
+	{
+	public:
+		MyFormatter(void)
+		{
+		}
+
+		// 2025-12-14: Can't do this, str() returns by value, which would get destroyed after leaving the function resulting
+		//   in the return char* being hanging at best...
+		//operator const char* (void) { return str().c_str(); }
+		operator const std::string(void) { return str(); }
+	};
+
 	using StringView = std::string_view;
 
 	using UpgradeKey = tbxGame::BasicTechTree::UpgradeKey;

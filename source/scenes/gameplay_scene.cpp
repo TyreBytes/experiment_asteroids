@@ -92,7 +92,7 @@ void Asteroids::GameplayScene::OnRenderInterface(void) const
 	BaseRustyScene::OnRenderInterface();
 
 	tbGraphics::Text levelText;
-	Interface::MakeTitleText(levelText, NotLocalized("Level ") + GetStatAsIntegerString(Stat::Level));
+	Interface::MakeTitleText(levelText, MyFormatter() << NotLocalized("Level ") << GetStatAsIntegerString(Stat::Level));
 	levelText.SetOrigin(Anchor::TopLeft);
 	levelText.SetPosition(Interface::GetAnchorPositionOfInterface(Anchor::TopLeft, kPadding, kPadding));
 	levelText.Render();

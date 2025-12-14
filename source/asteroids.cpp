@@ -24,6 +24,8 @@
   #include "development/developer_console_commands.hpp"
 #endif
 
+#include <sstream>
+
 //--------------------------------------------------------------------------------------------------------------------//
 
 namespace Asteroids
@@ -76,11 +78,20 @@ namespace Asteroids
 
 //--------------------------------------------------------------------------------------------------------------------//
 
+void TriggerError(const Asteroids::String& errorMessage)
+{
+	tbCore::Error::TriggerError("%s", errorMessage.c_str());
+}
+
 int Asteroids::Main(int argumentCount, const char* argumentValues[])
 {
+	int fortyTwo = 42;
+	TriggerError(MyFormatter() << "This is a new error message " << fortyTwo);
+
 	const UserSettings launchSettings = ParseLaunchParameters(argumentCount, argumentValues);
 
-	if (true == launchSettings.GetBoolean("developer"))
+	//if (true == launchSettings.GetBoolean("developer"))
+	if (true == launchSettings.GetBoolean(MyFormatter() << "developer"))
 	{
 	//	RacecarSelectionScene::SetDeveloperSelectedCarID(1);
 	//	const String developerKey = tbCore::FileUtilities::LoadFileContentsToString(GetSaveDirectory() + "developer_key", true);
